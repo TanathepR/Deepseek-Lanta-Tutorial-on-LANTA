@@ -1,4 +1,4 @@
-# Tutorial: Running DeepSeek Model on LANTA HPC for High School Students
+# Tutorial: Running DeepSeek Model on LANTA
 
 ## Introduction
 LANTA is Thailand's supercomputer, managed by the NSTDA Supercomputer Center (ThaiSC). It is a powerful tool for running AI models like **DeepSeek**, which is used for natural language processing (NLP) tasks. In this tutorial, we will guide you through setting up DeepSeek on LANTA and running a simple inference.
