@@ -21,25 +21,9 @@ ssh your_username@lanta.nstda.or.th
 LANTA ใช้ระบบ **environment module** ในการจัดการซอฟต์แวร์ ก่อนใช้งาน DeepSeek ให้โหลดโมดูลที่จำเป็นโดยใช้คำสั่ง:
 ```sh
 module use /project/cb900902-hpct01/modules
-module load nano miniconda tree
+module load nano miniconda
 ```
 คำสั่งนี้จะทำให้แน่ใจว่าระบบมี Python พร้อมใช้งาน
-
-## ขั้นตอนที่ 3: สร้าง Virtual Environment
-เพื่อแยกการใช้งานไลบรารี Python ออกจากระบบหลัก ให้สร้าง Virtual Environment ด้วยคำสั่ง:
-```sh
-python -m venv deepseek_env
-source deepseek_env/bin/activate
-```
-ตอนนี้คุณอยู่ในสภาพแวดล้อมแยกต่างหากสำหรับ DeepSeek
-
-## ขั้นตอนที่ 4: ติดตั้ง DeepSeek และไลบรารีที่จำเป็น
-ใช้คำสั่ง **pip** เพื่อติดตั้งไลบรารีที่จำเป็น:
-```sh
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-pip install transformers deepseek
-```
-คำสั่งนี้จะติดตั้ง **PyTorch (รองรับ CUDA 11.8)** และ **DeepSeek**
 
 ## ขั้นตอนที่ 5: ทดสอบรัน DeepSeek
 สร้างไฟล์ **deepseek_inference.py**
@@ -80,7 +64,7 @@ nano deepseek_job.sh
 #SBATCH -N 1 -c 16    # จำนวนโหนดและ CPU ต่อ task
 #SBATCH --gpus-per-task=1  # ใช้ 1 GPU ต่อ task
 #SBATCH --ntasks-per-node=4  # จำนวน task ต่อโหนด
-#SBATCH -A cb900902
+#SBATCH -A cb9009xx
 #SBATCH --time=00:30:00
 #SBATCH --output=deepseek_output.log
 #SBATCH --error=deepseek_error.log
