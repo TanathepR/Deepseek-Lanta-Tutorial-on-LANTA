@@ -20,8 +20,8 @@ Enter your password and verify code when prompted.
 ## Step 2: Loading Required Modules
 LANTA uses an environment module system. Before running DeepSeek, load the necessary software:
 ```sh
-module load cuda/11.8
-module load python/3.10
+module use /project/cb900902-hpct01/modules
+module load nano miniconda tree
 ```
 These commands ensure your environment has CUDA (for GPU support) and Python.
 
