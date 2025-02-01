@@ -1,52 +1,52 @@
-# Tutorial: Running DeepSeek Model on LANTA
+# คู่มือการรัน DeepSeek บน LANTA
 
-## Introduction
-LANTA is Thailand's supercomputer, managed by the NSTDA Supercomputer Center (ThaiSC). It is a powerful tool for running AI models like **DeepSeek**, which is used for natural language processing (NLP) tasks. In this tutorial, we will guide you through setting up DeepSeek on LANTA and running a simple inference.
+## แนะนำ
+**LANTA** เป็นซูเปอร์คอมพิวเตอร์ของประเทศไทยที่บริหารจัดการโดย **NSTDA Supercomputer Center (ThaiSC)** ซึ่งเป็นเครื่องมือที่ทรงพลังสำหรับการรันโมเดล AI เช่น **DeepSeek** ที่ใช้สำหรับงานประมวลผลภาษาธรรมชาติ (NLP) บทความนี้จะอธิบายขั้นตอนการตั้งค่าและรันโมเดล DeepSeek บน LANTA
 
-## Prerequisites
-Before you begin, you should:
-1. Have an account on **LANTA HPC** (request access from ThaiSC if necessary).
-2. Understand basic **Linux commands**.
-3. Know how to use a terminal and SSH.
-4. Be familiar with Python programming.
+## สิ่งที่ต้องเตรียมก่อนเริ่มต้น
+ก่อนที่จะเริ่มต้นใช้งาน DeepSeek บน LANTA คุณต้องมี:
+1. **บัญชีผู้ใช้บน LANTA HPC** (หากยังไม่มีสามารถขอสิทธิ์การใช้งานได้จาก ThaiSC)
+2. **ความเข้าใจพื้นฐานเกี่ยวกับคำสั่ง Linux**
+3. **ทักษะการใช้งาน Terminal และ SSH**
+4. **ความคุ้นเคยกับภาษา Python**
 
-## Step 1: Logging into LANTA
-To access LANTA, use **SSH** from your local computer. Open a terminal and enter:
+## ขั้นตอนที่ 1: เข้าสู่ระบบ LANTA
+ใช้ **SSH** เพื่อเข้าถึง LANTA จากเครื่องคอมพิวเตอร์ของคุณ โดยใช้คำสั่ง:
 ```sh
 ssh your_username@lanta.nstda.or.th
 ```
-Enter your password and verify code when prompted.
+ใส่รหัสผ่านและรหัสยืนยันเมื่อระบบร้องขอ
 
-## Step 2: Loading Required Modules
-LANTA uses an environment module system. Before running DeepSeek, load the necessary software:
+## ขั้นตอนที่ 2: โหลดโมดูลที่จำเป็น
+LANTA ใช้ระบบ **environment module** ในการจัดการซอฟต์แวร์ ก่อนใช้งาน DeepSeek ให้โหลดโมดูลที่จำเป็นโดยใช้คำสั่ง:
 ```sh
 module use /project/cb900902-hpct01/modules
 module load nano miniconda tree
 ```
-These commands ensure your environment has Python.
+คำสั่งนี้จะทำให้แน่ใจว่าระบบมี Python พร้อมใช้งาน
 
-## Step 3: Creating a Virtual Environment
-A virtual environment isolates your Python packages.
+## ขั้นตอนที่ 3: สร้าง Virtual Environment
+เพื่อแยกการใช้งานไลบรารี Python ออกจากระบบหลัก ให้สร้าง Virtual Environment ด้วยคำสั่ง:
 ```sh
 python -m venv deepseek_env
 source deepseek_env/bin/activate
 ```
-Now, you are inside the virtual environment, and you can install required libraries.
+ตอนนี้คุณอยู่ในสภาพแวดล้อมแยกต่างหากสำหรับ DeepSeek
 
-## Step 4: Installing DeepSeek and Dependencies
-Use **pip** to install the DeepSeek model and required libraries:
+## ขั้นตอนที่ 4: ติดตั้ง DeepSeek และไลบรารีที่จำเป็น
+ใช้คำสั่ง **pip** เพื่อติดตั้งไลบรารีที่จำเป็น:
 ```sh
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 pip install transformers deepseek
 ```
-These commands install **PyTorch** (with CUDA support) and **DeepSeek**.
+คำสั่งนี้จะติดตั้ง **PyTorch (รองรับ CUDA 11.8)** และ **DeepSeek**
 
-## Step 5: Running DeepSeek Inference
-Create a new Python script `deepseek_inference.py`:
+## ขั้นตอนที่ 5: ทดสอบรัน DeepSeek
+สร้างไฟล์ **deepseek_inference.py**
 ```sh
 nano deepseek_inference.py
 ```
-Copy and paste the following code:
+คัดลอกและวางโค้ดต่อไปนี้:
 ```python
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
@@ -60,41 +60,43 @@ outputs = model.generate(**inputs, max_length=200)
 print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 ```
 
-## Step 6: Running the Script on LANTA
-To execute the script, run:
+## ขั้นตอนที่ 6: รันสคริปต์บน LANTA
+ใช้คำสั่งต่อไปนี้เพื่อรันสคริปต์:
 ```sh
 python deepseek_inference.py
 ```
-This will load the **DeepSeek model** and generate a response based on the given text.
+ระบบจะโหลดโมเดล **DeepSeek** และสร้างผลลัพธ์จากข้อความที่กำหนด
 
-## Step 7: Submitting as a Batch Job (Optional)
-For large-scale tasks, create a Slurm job script (`deepseek_job.slurm`):
+## ขั้นตอนที่ 7: ส่งงานแบบ Batch Job (สำหรับงานขนาดใหญ่)
+สำหรับงานที่ต้องใช้ทรัพยากรมาก สามารถใช้ **Slurm** เพื่อรันเป็น batch job ได้ โดยสร้างไฟล์ **deepseek_job.sh**
 ```sh
 nano deepseek_job.sh
 ```
-Add the following content:
+เพิ่มเนื้อหาต่อไปนี้:
 ```sh
 #!/bin/bash
 #SBATCH -p gpu
 #SBATCH --job-name=deepseek_test
-#SBATCH -N 1 -c 16   			    # Specify number of nodes and processors per task
-#SBATCH --gpus-per-task=1		    # Specify number of GPU per task
-#SBATCH --ntasks-per-node=4		    # Specify tasks per node
+#SBATCH -N 1 -c 16    # จำนวนโหนดและ CPU ต่อ task
+#SBATCH --gpus-per-task=1  # ใช้ 1 GPU ต่อ task
+#SBATCH --ntasks-per-node=4  # จำนวน task ต่อโหนด
 #SBATCH -A cb900902
 #SBATCH --time=00:30:00
 #SBATCH --output=deepseek_output.log
+#SBATCH --error=deepseek_error.log
 
 module use /project/cb900902-hpct01/modules
 module load nano miniconda tree
 
 python deepseek_inference.py
 ```
-Submit the job using:
+
+ส่งงานด้วยคำสั่ง:
 ```sh
 sbatch deepseek_job.sh
 ```
-This will run DeepSeek on **one GPU node** with **8 CPU cores and 32GB RAM**.
+คำสั่งนี้จะรัน DeepSeek บน **1 GPU node** โดยใช้ **16 CPU cores และ 32GB RAM**
 
-## Conclusion
-You have successfully set up and run **DeepSeek** on **LANTA HPC**. You can now experiment with different prompts and explore more advanced features of the model.
+## สรุป
+คุณได้เรียนรู้วิธีติดตั้งและใช้งาน **DeepSeek** บน **LANTA HPC** สำเร็จแล้ว ตอนนี้คุณสามารถทดลองปรับแต่ง prompt และสำรวจฟีเจอร์ต่าง ๆ ของโมเดลเพิ่มเติมได้!
 
