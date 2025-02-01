@@ -59,7 +59,6 @@ inputs = tokenizer(text, return_tensors="pt").to("cuda")
 outputs = model.generate(**inputs, max_length=200)
 print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 ```
-Save the file and exit (Ctrl+X, then Y, then Enter).
 
 ## Step 6: Running the Script on LANTA
 To execute the script, run:
