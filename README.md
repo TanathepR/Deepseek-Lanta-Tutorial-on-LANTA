@@ -13,9 +13,9 @@ Before you begin, you should:
 ## Step 1: Logging into LANTA
 To access LANTA, use **SSH** from your local computer. Open a terminal and enter:
 ```sh
-ssh your_username@lanta.thaisc.io
+ssh your_username@lanta.nstda.or.th
 ```
-Enter your password when prompted.
+Enter your password and verify code when prompted.
 
 ## Step 2: Loading Required Modules
 LANTA uses an environment module system. Before running DeepSeek, load the necessary software:
@@ -69,17 +69,20 @@ python deepseek_inference.py
 This will load the **DeepSeek model** and generate a response based on the given text.
 
 ## Step 7: Submitting as a Batch Job (Optional)
-For large-scale tasks, create a PBS job script (`deepseek_job.pbs`):
+For large-scale tasks, create a Slurm job script (`deepseek_job.slurm`):
 ```sh
-nano deepseek_job.pbs
+nano deepseek_job.slurm
 ```
 Add the following content:
 ```sh
 #!/bin/bash
-#PBS -N deepseek_test
-#PBS -l select=1:ncpus=8:ngpus=1:mem=32GB
-#PBS -l walltime=00:30:00
-#PBS -j oe
+#SBATCH --job-name=deepseek_test
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --gpus=1
+#SBATCH --mem=32GB
+#SBATCH --time=00:30:00
+#SBATCH --output=deepseek_output.log
 
 module load cuda/11.8
 module load python/3.10
@@ -88,17 +91,10 @@ python deepseek_inference.py
 ```
 Submit the job using:
 ```sh
-qsub deepseek_job.pbs
+sbatch deepseek_job.sh
 ```
 This will run DeepSeek on **one GPU node** with **8 CPU cores and 32GB RAM**.
 
 ## Conclusion
 You have successfully set up and run **DeepSeek** on **LANTA HPC**. You can now experiment with different prompts and explore more advanced features of the model.
-
-### Next Steps
-- Try different prompts and **modify the model parameters**.
-- Explore other DeepSeek models (**e.g., deepseek-chat**).
-- Learn about batch processing and optimize GPU usage for larger tasks.
-
-For more information, visit [ThaiSC's website](https://thaisc.io/).
 
