@@ -23,7 +23,7 @@ LANTA uses an environment module system. Before running DeepSeek, load the neces
 module use /project/cb900902-hpct01/modules
 module load nano miniconda tree
 ```
-These commands ensure your environment has CUDA (for GPU support) and Python.
+These commands ensure your environment has Python.
 
 ## Step 3: Creating a Virtual Environment
 A virtual environment isolates your Python packages.
