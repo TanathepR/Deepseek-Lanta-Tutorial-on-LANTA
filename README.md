@@ -71,22 +71,23 @@ This will load the **DeepSeek model** and generate a response based on the given
 ## Step 7: Submitting as a Batch Job (Optional)
 For large-scale tasks, create a Slurm job script (`deepseek_job.slurm`):
 ```sh
-nano deepseek_job.slurm
+nano deepseek_job.sh
 ```
 Add the following content:
 ```sh
 #!/bin/bash
+#SBATCH -p gpu
 #SBATCH --job-name=deepseek_test
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=8
-#SBATCH --gpus=1
-#SBATCH --mem=32GB
+#SBATCH -N 1 -c 16   			    # Specify number of nodes and processors per task
+#SBATCH --gpus-per-task=1		    # Specify number of GPU per task
+#SBATCH --ntasks-per-node=4		    # Specify tasks per node
+#SBATCH -A cb900902
 #SBATCH --time=00:30:00
 #SBATCH --output=deepseek_output.log
 
-module load cuda/11.8
-module load python/3.10
-source deepseek_env/bin/activate
+module use /project/cb900902-hpct01/modules
+module load nano miniconda tree
+
 python deepseek_inference.py
 ```
 Submit the job using:
