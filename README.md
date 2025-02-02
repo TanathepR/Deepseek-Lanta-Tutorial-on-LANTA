@@ -21,7 +21,7 @@ ssh your_username@lanta.nstda.or.th
 LANTA ใช้ระบบ **environment module** ในการจัดการซอฟต์แวร์ ก่อนใช้งาน DeepSeek ให้โหลดโมดูลที่จำเป็นโดยใช้คำสั่ง:
 ```sh
 module use /project/cb900902-hpct01/modules
-module load nano miniconda
+module load nano miniconda deepseek
 ```
 คำสั่งนี้จะทำให้แน่ใจว่าระบบมี Python พร้อมใช้งาน
 
